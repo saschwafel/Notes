@@ -84,3 +84,4 @@ Walkthrough
     - Define space on the fleet to run those task definitions <---usually behind a load-balancer
 
 
+Key value store = transactional journal
