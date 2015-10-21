@@ -1,0 +1,87 @@
+Micoservices Without the Servers: AWS Lambda in Action
+======================================================
+
+Lambda
+
+    - Serverless compute offering
+
+Evolution of storage
+
+    - Used to have to buy physical disks and buy them in excess capacity
+    - Eventually became cloud store <-- disks still exist, but they're somebody else's problem
+    - Sharing = lower cost <-- no need to plan ahead
+
+Evolution of compute
+
+    - Smaller units of compute (containers)
+        - smaller unit than a VM as a compute abstraction
+    - Have to worry about internal and external abstraction
+        - How many do you need?
+        - Are you fully utilizing them?
+    - Computers --> VMs --> ---> containers --> individual functions
+    - Burst capability can be shared
+    - Don't need to declare how much compute is going to be used
+
+Serverless Microservice Architecture
+
+    - A function is the unit of compute on Lambda
+    - Choice of many languages (Java, nodeJS, Scala, Clojure)
+
+Demo
+
+    - Can define chunk of memory (think of it as "overall set of resources that are being requested")
+    - Can test from inside Lambda console
+    - Is already fault tolerant, scalable, and highly-available
+    - Lambda gives every function space to live in /tmp (for letting utilities actually function)
+
+AWS Lambda offers 23 "power levels"
+
+    - Higher levels offer more memory AND more CPU (128 MB - 1.5GB)
+    - Higher power, lower latency
+    
+
+AWS Cognito for authentication
+
+AWS Lambda has US E/W, Ireland, Tokyo regions
+
+S3 - cross region replication
+
+Demo
+
+    - Took a few lines of code to deploy an AWS Lambda function
+    - Turned it into an S3 event handler
+    - Uploaded our image processing microservice
+    - Turned on S3 cross region replication
+
+Amazon API Gateway
+
+    - Can host multiple versions and stages of your API
+    - Create and distribute API keys to devs. 
+    - Throttle and monitor calls
+    - Cache responses
+    - Transform data
+    - Generate SDKs
+
+AWS Lambda as a Scalable Testing Platform
+
+    - Call URL endpoint from within Lambda
+    - Turn it into a unit test by storing the outcome in Amazon DynamoDB
+    - Turn this into a load test by doing it N times
+
+Serverless Website in Lambda
+
+    - Create single page webapp
+    - Configure S3 bucket serving static content
+    - Test in a browser
+
+Other stuff you can do with Lambda
+
+    - Scalable IOT backends
+    - NoSQL triggers
+    - Extending Platforms
+    - Adding a feature to Amazon S3
+    - Real Time Streaming Analysis
+
+Mess with the Lambda templates!
+
+
