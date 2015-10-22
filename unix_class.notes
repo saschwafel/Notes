@@ -125,6 +125,8 @@ Grep is case-sensitive, so use `-i` to turn that functionality off
 
 You can also pipe any output to a file to save for later: `ifconfig > ifconfig_details.txt` will write the output of ifconfig to a file
 
+In addition, you can use `>>` to append to a file (rather than overwriting it)
+
 Opening a compressed file:
 
 
