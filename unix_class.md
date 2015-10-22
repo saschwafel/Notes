@@ -1,0 +1,167 @@
+### First things first:
+-------------------
+
+`man <command>` if you're confused
+
+e.g. `man rsync`
+
+`man cp`
+
+`man htop`
+
+This is the first place to check for explanations of an application's options or usage.
+
+### Navigating the Filesystem
+------------------------
+
+`cd` - Change directory
+
+`pwd` - print working directory
+
+`cp` - <from> <to>
+
+`cp ~/test .` <-- moves a file called test that is locatd in the home directory to the users current working directory
+
+cp has a recursive option for folders (cp -R), but if moving folders, it's better to use rsync
+
+rsync - full-featured utility for moving files. Can do so over SSH or locally.
+
+`rsync -avusP ~/test ec2-user@1.1.1.1:` <-- copies test from user's home directory to the home directory on a remote server, the various flags add archiving, verbosity, and progress. Check the man pages for more options. (or better yet, check Google).
+
+ALMOST ALWAYS A BETTER IDEA TO USE RSYNC THAN CP
+
+rsync does incremental backups -> will only sync the changed bytes (this is super handy for syncing large files)
+
+### Moving between folders
+----------------------
+
+`.` - current directory
+
+`..` - one step up the directory hierarchy
+
+`~/` - user's home directory. On an ec2 instance, this would be /home/ec2-user
+
+Use tab-complete to quickly navigate to the directory you want. Hitting tab once a few characters have unambiguously defined which file or directory you want will "complete" the rest of the path. This is essential to using the command line effectively.
+
+### Installing Packages
+----------------------
+
+90% of the Linuxes you encounter will be based on RPM (Red Hat Package Management) or APT (Debian Package Management)
+
+Some examples of RPM
+
+* RHEL
+* Fedora
+* Amazon Linux AMI
+
+Some examples of APT (or .deb)
+
+* Debian
+* Ubuntu
+* Mint
+
+The main difference is how you install applications.
+
+RPM: `sudo yum install tmux`
+
+APT: `sudo apt-get install tmux`
+
+for apt, use aptitude instead of apt-get, e.g. `sudo aptitude install tmux`
+
+You can chain installs:
+
+`sudo aptitude install tmux screen pidgin -y`
+
+`-y` means "assume yes"
+
+Similarly, to remove an application or reinstall:
+
+`sudo aptitude reinstall tmux`
+
+`sudo aptitude remove tmux`
+
+### Common Issues
+----------------------------------
+
+Need to kill a program:
+
+use `ps waux|grep -i` <a few letters from your program name> to get the process id (pid) then: kill 1234
+
+If the program is running as root, then to interact with it, including killing it, will require super-user (aka sudo)
+
+Alternatively, install and use htop to see active programs
+
+`sudo yum install htop`
+
+You can kill programs from within htop with F9
+
+Need to restart a service
+
+RPM-based system: `sudo service mysqld restart`
+
+You can check to see if its running already with "sudo service mysqld status"
+
+On apt-based systems, this is often different, check the manual (or Google) for restarting services if you're not using Amazon AMI
+
+Need to edit a config file:
+
+ssh into server
+
+`vim /path/to/file.txt` (if vim is not found, use vi, it is already installed)
+
+Vim starter guide: [http://bullium.com/support/vim.html](http://bullium.com/support/vim.html)
+
+TO QUIT VIM!!!!!!!!!!: use `:q` (that is, in normal mode, type colon, then q). If prompted, :q! to force quit without saving.
+
+Editing remote files with vi can save lots of time spent syncing minor changes via FTP (and is more secure). If small changes are all that is needed, it's much easier to just modify the file in place.
+
+Need to find something in a large file:
+
+You can pipe the file through grep to search for a particular line (for example an entry in a log file):
+
+`cat filename.filextension | grep -i <your search string>`
+
+Grep is case-sensitive, so use `-i` to turn that functionality off
+
+You can also pipe any output to a file to save for later: `ifconfig > ifconfig_details.txt` will write the output of ifconfig to a file
+
+Opening a compressed file:
+
+
+Don't bother trying to learn all the tar flags, nobody knows them all.
+
+To open .tar.gz files - `tar -xvzf filename.tar.gz`
+
+   * f: this must be the last flag of the command, and the tar file must be immediately after. It tells tar the name and path of the compressed file.
+   * z: tells tar to decompress the archive using gzip
+   * x: tar can collect files or extract them. x does the latter.
+   * v: makes tar talk a lot. Verbose output shows you all the files being extracted.
+
+### Time Savers
+----------------------------------
+
+Add entries to `.ssh/config` to simplify SSH connections
+
+Format is as follows: 
+
+    Host gcc_
+    
+        IdentityFile ~/Work/keys/pb_oregon.pem
+        user ec2-user
+        HostName ec2-52-26-46-117.us-west-2.compute.amazonaws.com
+
+Once you've added this entry, you can just use `ssh gcc_` or `rsync test.txt gcc_:` to refer to it in shorthand
+
+Adding environmental variables: 
+
+These are built-ins that the shell knows about. You can see the current variables listed by running `env`
+
+You can add variables by exporting them: `export AWS_SECRET=something`
+
+If you want them to persist between logins, and not disappear when you log out, add them to the `~/.bashrc` or `~/.bash_profile` file
+
+Writing a long command in an editor: 
+
+You can use CTRL+x CTRL+e to open the current command prompt in a text editor. This is helpful for editing long commands. They are run on text-editor output (you may need to define the editor variable in the shell: `export EDITOR=vim`). 
+
+
